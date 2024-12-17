@@ -68,3 +68,35 @@ def remove_cart_item(request,id):
     cart_item.delete()
     return redirect('/') 
 
+
+
+def add_coupon(request):
+    code = request.POST.get('code')
+    print('code===', code)
+    cart = CartItem.objects.get(cart__user=request.user)
+    print('cart===', cart)
+
+    if not code:
+        return redirect('/')
+    try:
+        coupon = Coupon.objects.get(code=code,is_active=True)
+        print('coupon===', coupon)
+        
+        if coupon.used_count>= coupon.limit:
+            print('coupon======')
+            return redirect('/')
+        total_price = cart.get_total()
+        
+        print('total_price===', total_price)
+        discount_amount = (coupon.discount/100)* total_price
+        print('discount_amount===', discount_amount)
+        final_price = total_price - discount_amount
+        print('final_price===', final_price)
+
+        coupon.used_count +=1
+        coupon.save()
+
+        return redirect('/')
+    
+    except Coupon.DoesNotExist:
+        return redirect('/')

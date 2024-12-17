@@ -76,3 +76,16 @@ class CartItem(models.Model):
     
 
 
+class Coupon(models.Model):
+    code = models.CharField(max_length=50, unique=True)
+    discount = models.DecimalField(max_digits=5, decimal_places=2)
+    valid_from = models.DateTimeField()
+    valid_to = models.DateTimeField()
+    limit = models.PositiveIntegerField(default=1)
+    used_count = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField()
+
+    
+    def __str__(self):
+        return self.code
+    
