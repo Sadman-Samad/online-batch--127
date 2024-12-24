@@ -100,3 +100,14 @@ def add_coupon(request):
     
     except Coupon.DoesNotExist:
         return redirect('/')
+
+
+
+def add_to_wishlist(request,id):
+    print('id---------', id)
+    product = get_object_or_404(Product, pk=id)
+    print('product====', product)
+    wishlist = Wishlist.objects.get_or_create(user=request.user, product = product)
+    print('wishlist=============', wishlist)
+
+    return redirect('/')

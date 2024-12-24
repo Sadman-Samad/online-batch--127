@@ -89,3 +89,12 @@ class Coupon(models.Model):
     def __str__(self):
         return self.code
     
+
+class Wishlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, verbose_name=("pro"), on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add = True)
+
+    def __str__(self):
+        return self.product.name
+     
