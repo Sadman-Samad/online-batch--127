@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}
+  Cart Item
+{% endblock %}
+{% block main %}
+  <div class="container mx-auto">
+    <p class="text-2xl font-semibold">Your Shopping Cart</p>
+
+   <div class="flex">
+    <div class="w-1/2">
+        {% for c in cart %}
+          <div class="bg-red-100 mt-10">
+            <div class="grid grid-cols-8 items-center  gap-4 p-4">
+              <img src="{{ c.product.image.url }}" alt="" class="w-20 h-20 bg-red-100" />
+              <p class="text-lg font-semibold col-span-2">{{ c.product.name }}</p>
+              <p class="text-lg font-semibold">{{ c.product.color }}</p>
+              <p class="text-lg font-semibold">+{{ c.quantity }}-</p>
+              <p class="text-lg font-semibold">{{ c.get_total|floatformat:0 }} TK</p>
+              <a href="{% url 'remove_cart_item' c.pk %}">X</a>
+            </div>
+          </div>
+        {% endfor %}
+
+        <div class="flex justify-center mt-4">
+            <a href="{% url 'create_order' %}" class="bg-blue-600 hover:bg-blue-400 p-2 cursor-pointer rounded-lg">CheckOut</a>
+        </div>
+      </div>
+      <div class="w-1/2 px-5 mt-5">
+        <div>
+          <form action="{% url 'add_coupon' %}" id="couponForm" method="post" class="pt-1 pb-4">
+              {% csrf_token %}
+              <div class="flex gap-6">
+                  <input type="text" id="coupon_code" name="code" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[80%] p-2.5 " placeholder="Coupon code" />
+                  <button type="button" class="bg-pink-500 w-28 h-15 rounded-lg text-white hover:bg-black" id="applyCouponButton">Apply</button>
+              </div>
+          </form>
+          <div id="coupon-message"></div>
+      </div>
+      </div>
+   </div>
+  </div>
+{% endblock %}

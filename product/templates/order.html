@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}
+  Cart Item
+{% endblock %}
+{% block main %}
+<div class="container mx-auto mt-10">
+    <form method="POST" action="">
+        <div class="md:flex block justify-between">
+            <div class="md:w-3/5 p-4">
+                <p class="text-lg font-semibold">BILLING & SHIPPING</p>
+
+                {% csrf_token %}
+                <div class="grid gap-6 mb-6 md:grid-cols-2 mt-5">
+                    <div>
+                        <input type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Full Name" name="full_name" required />
+                    </div>
+                    <div>
+                        <input type="tel" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Phone Number" name="phone" required />
+                    </div>
+                   
+                    <div>
+                        <input type="text" id="address" name="full_address" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Address" required />
+                    </div>
+                </div>
+                <textarea id="message" rows="4" name="order_note" class="block p-2 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Order Note"></textarea>
+            </div>
+            <div class="md:w-2/5 p-4 md:mt-14 mt-2 mb-2 border-l border-black-700">
+                
+               
+               
+                <div>
+                    <p class="text-lg font-semibold mb-3">Choose Shipping Method</p>
+                    <div class="flex items-center">
+                        <div class="flex-1">
+                            <input checked id="delivery_inside" type="radio" value="Inside Dhaka" name="shipping_area" class="w-4 h-4 text-pink-400">
+                            <label for="delivery_inside" class="ms-2 text-lg text-gray-900 dark:text-gray-300">Delivery Inside Dhaka</label>
+                        </div>
+                        <div class="flex-col">
+                            <p>৳ 70.00</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center mb-1">
+                        <div class="flex-1">
+                            <input id="delivery_outside" type="radio" value="Outside Dhaka" name="shipping_area" class="w-4 h-4 text-pink-500">
+                            <label for="delivery_outside" class="ms-2 text-lg text-gray-900 dark:text-gray-300">Delivery Outside Dhaka</label>
+                        </div>
+                        <div class="flex-col">
+                            <p>৳ 130.00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden">
+                    {% for i in cart_items.variations %}
+                        <input type="hidden" name="variations[{{ forloop.counter0 }}][color]" value="{{ i.color.name }}">
+                        <input type="hidden" name="variations[{{ forloop.counter0 }}][size]" value="{{ i.size.name }}">
+                    {% endfor %}
+                </div>
+                
+                    
+                <div class="flex items-center mt-6 mb-2">
+                    <div class="flex-1">
+                        <p>Total MRP</p>
+                    </div>
+                    <div class="flex-col">
+                        <p>৳ {{ subtotal }}</p>
+                    </div>
+                </div>
+                <div class="border-2 border-b border-black-500"></div>
+                <div class="flex mt-2">
+                    <div class="flex-1">
+                        <p>Total Amount</p>
+                    </div>
+                    <div class="flex-col">
+                        <p>৳ {{ subtotal }}</p>
+                    </div>
+                </div>
+
+                
+
+                <button type="submit" class="w-full h-10 text-white bg-pink-500 hover:bg-black rounded-md mt-4">Place Order</button>
+            </div>
+        </div>
+    </form>
+  </div>
+{% endblock %}

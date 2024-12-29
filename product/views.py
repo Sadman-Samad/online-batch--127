@@ -41,7 +41,6 @@ def product_update(request,id):
 def add_to_cart(request,id):
     product = get_object_or_404(Product, pk = id)
     session_key = request.session.session_key or request.session.create()
-
     cart , _ = Cart.objects.get_or_create(session_key=session_key, user = request.user)
     cart_item,created = CartItem.objects.get_or_create(cart=cart,product=product)
 
@@ -60,14 +59,18 @@ def update_cart(request,id):
         cart_item.save()
     else: 
         cart_item.delete()   
-    return redirect('/')    
+    return redirect('cart_views')    
 
 
 def remove_cart_item(request,id):
-    cart_item = get_object_or_404(CartItem, pk=id, cart___session_key=request.session.session_key)
+    cart_item = get_object_or_404(CartItem, pk=id)
     cart_item.delete()
-    return redirect('/') 
+    return redirect('cart_views') 
 
+def cart_views(request):
+    cart = CartItem.objects.filter(cart__user = request.user)
+    # print('cart=======', cart)
+    return render(request, 'cart.html', {'cart':cart})
 
 
 def add_coupon(request):
@@ -111,3 +114,8 @@ def add_to_wishlist(request,id):
     print('wishlist=============', wishlist)
 
     return redirect('/')
+
+
+
+def create_order(request):
+    return render(request,'order.html')
