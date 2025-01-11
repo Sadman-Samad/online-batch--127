@@ -11,7 +11,11 @@
         {% for c in cart %}
           <div class="bg-red-100 mt-10">
             <div class="grid grid-cols-8 items-center  gap-4 p-4">
+              
+              {% if c.product.image %}
+                
               <img src="{{ c.product.image.url }}" alt="" class="w-20 h-20 bg-red-100" />
+              {% endif %}
               <p class="text-lg font-semibold col-span-2">{{ c.product.name }}</p>
               <p class="text-lg font-semibold">{{ c.product.color }}</p>
               <p class="text-lg font-semibold">+{{ c.quantity }}-</p>

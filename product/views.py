@@ -118,4 +118,36 @@ def add_to_wishlist(request,id):
 
 
 def create_order(request):
-    return render(request,'order.html')
+    cart_items = CartItem.objects.filter(cart__user=request.user)
+    print('cart_items======', cart_items)
+    # if not cart_items.exists():
+    #     return render(request, 'order.html', {'error': 'Your cart is empty!'})
+
+    total_due = sum(item.get_total() for item in cart_items)
+    print('total_due----------', total_due)
+
+    if request.method == "POST":
+        form = OrderForm(request.POST)
+        print('form=====', form)
+        if form.is_valid():
+            print('form=====', form)
+            order = form.save(commit=False)
+            order.user = request.user
+            order.total_due = total_due
+            order.total_paid = 0.00
+            order.save()
+
+            order.cart.set(cart_items)
+            
+            # Clear the cart
+            cart_items.delete()
+
+
+    else:
+        form = OrderForm()
+
+    return render(request, 'order.html', {
+        'cart_items': cart_items,
+        'total_due': total_due,
+        'form': form,
+    })

@@ -109,14 +109,15 @@ class Order(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(choices=STATUS_CHOICE, max_length=250, default='PENDING')
-    cart = models.ManyToManyField(CartItem)
-    coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE)
+    cart = models.ManyToManyField(CartItem, blank =True)
+    coupon = models.ForeignKey(Coupon, on_delete=models.CASCADE, null = True, blank =True)
     full_name = models.CharField(max_length=250)
-    email = models.EmailField()
+  
     address = models.TextField()
-    
-    total_due = models.DecimalField(max_digits=5, decimal_places=2)
-    total_paid = models.DecimalField(max_digits=5, decimal_places=2)
+    phone = models.CharField(max_length=250, null=True)
+    order_note = models.TextField(null=True)
+    total_due = models.FloatField(null=True)
+    total_paid = models.FloatField(null=True)
 
     created = models.DateTimeField(auto_now_add = True)
     updated = models.DateTimeField(auto_now = True)
