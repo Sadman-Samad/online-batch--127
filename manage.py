@@ -1,11 +1,14 @@
-#!/usr/bin/env python
+
+
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
 from django.core.wsgi import get_wsgi_application  
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ecommerce.settings')  
 
+# Vercel expects an `app` variable for serving the application
 app = get_wsgi_application()
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ecommerce.settings') 
+
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ecommerce.settings')
