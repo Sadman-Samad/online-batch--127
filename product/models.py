@@ -1,10 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import *
+import cloudinary
+import cloudinary.models
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to="category/image",null=True)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name = 'children', null=True)
+    # image = models.ImageField(upload_to="category/image",null=True)
+    image = cloudinary.models.CloudinaryField("category/image", blank=True, null=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, related_name = 'children', null=True, blank=True)
     is_active = models.BooleanField(default=False)
     
 
@@ -26,7 +29,8 @@ class Product(models.Model):
     )
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100)
-    image = models.ImageField(upload_to='products/', blank=True, null=True)
+    # image = models.ImageField(upload_to='products/', blank=True, null=True)
+    image = cloudinary.models.CloudinaryField('products/', blank=True, null=True)
     brand = models.CharField(max_length=100, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     additional_description = models.TextField(blank=True, null=True)
